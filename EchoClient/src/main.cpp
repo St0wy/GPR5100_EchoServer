@@ -1,3 +1,4 @@
+#include <format>
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -20,11 +21,12 @@ void ResetBuffer(char* buffer, const std::size_t size)
 	}
 }
 
-std::optional<std::string> RenderChatWindow(char* charInputBuffer, const std::string& content)
+std::optional<std::string> RenderChatWindow(char* charInputBuffer, const std::string& content, const std::string& name)
 {
 	ImGui::SetNextWindowSizeConstraints(ImVec2(500, 300), ImVec2(1000, 1000));
 	ImGui::Begin("Chat !");
-	ImGui::Text("Write text and press enter to send it !");
+	ImGui::Text(std::format("Hello {} !", name).c_str());
+	ImGui::Text("Write text and press enter to send it.");
 	// ReSharper disable once CppTooWideScope
 	const bool pressedEnter = ImGui::InputTextWithHint(
 		"##chat",
@@ -144,20 +146,21 @@ int main()
 		ImGui::SFML::Update(window, deltaClock.restart());
 
 		// Read messages from network
-		sf::Socket::Status status = socket.receive(receivePacket);
-		if (status == sf::Socket::Done)
+		if (socket.receive(receivePacket) == sf::Socket::Done)
 		{
 			Message receiveMessage;
 			receivePacket >> receiveMessage;
 			messages.push_back(receiveMessage);
+			receivePacket.clear();
 		}
 
 		if (isConnected)
 		{
 			Message sendingMessage;
-			auto inputText = RenderChatWindow(messageInputBuffer, Message::GetMessagesString(messages));
+			auto inputText = RenderChatWindow(messageInputBuffer, Message::GetMessagesString(messages), name);
 			if (inputText.has_value())
 			{
+				
 				sendingMessage = { name, inputText.value() };
 				sendingPacket << sendingMessage;
 				isSendingMessage = true;
@@ -166,13 +169,18 @@ int main()
 			if (isSendingMessage)
 			{
 				sf::Socket::Status status = socket.send(sendingPacket);
-				if (status == sf::Socket::Disconnected || status == sf::Socket::Error)
+				if (status == sf::Socket::Disconnected)
+				{
+					isConnected = false;
+				}
+				else if (status == sf::Socket::Error)
 				{
 					std::cerr << "Couldn't send message.\n";
 				}
 				else if (status == sf::Socket::Done)
 				{
 					std::cout << "Message sent : " << sendingMessage.ToString() << "\n";
+					sendingPacket.clear();
 					messages.push_back(sendingMessage);
 					isSendingMessage = false;
 				}
