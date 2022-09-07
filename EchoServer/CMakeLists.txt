@@ -1,6 +1,4 @@
-﻿# CMakeList.txt : CMake project for Formative10, include source and define
-# project specific logic here.
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.8)
 
 set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -32,7 +30,6 @@ add_custom_target(
 # Get SFML and box2d libraries
 find_package(OpenGL REQUIRED)
 find_package(SFML COMPONENTS system window graphics main CONFIG REQUIRED)
-find_package(box2d CONFIG REQUIRED)
 include_directories(include/)
 
 # Add source to this project's executable.  
@@ -53,5 +50,3 @@ target_link_libraries(${EXECUTABLE_CUSTOM_NAME} PRIVATE sfml-main FLAC OpenAL Op
 else()
 target_link_libraries(${EXECUTABLE_CUSTOM_NAME} PRIVATE X11 FLAC UDev OpenAL  ${OPENGL_LIBRARIES} )
 endif()
-
-target_link_libraries(${EXECUTABLE_CUSTOM_NAME} PRIVATE box2d::box2d)
