@@ -1,5 +1,5 @@
 {
 	"name": "echo-server",
 	"version-string": "0.1.0",
-	"dependencies": ["sfml"]
+	"dependencies": [ "sfml", "imgui-sfml", "imgui"]
 }
