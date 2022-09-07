@@ -25,9 +25,10 @@ void ListenSockets(const std::vector<std::unique_ptr<sf::TcpSocket>>& clients, c
 
 			std::cout << message.ToString() << "\n";
 
-			for (auto& messageReceiver : clients)
+			for (const std::unique_ptr<sf::TcpSocket>& messageReceiver : clients)
 			{
 				if (client == messageReceiver) continue;
+
 
 				if (messageReceiver->send(packet) != sf::Socket::Done)
 				{

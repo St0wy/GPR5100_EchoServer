@@ -121,7 +121,6 @@ int main()
 	bool isConnected = false;
 	bool isSendingMessage = false;
 	bool isConnecting = false;
-	bool isReceiving = false;
 	sf::Packet sendingPacket;
 	sf::Packet receivePacket;
 
