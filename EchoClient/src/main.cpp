@@ -23,8 +23,12 @@ void ResetBuffer(char* buffer, const std::size_t size)
 
 std::optional<std::string> RenderChatWindow(char* charInputBuffer, const std::string& content, const std::string& name)
 {
-	ImGui::SetNextWindowSizeConstraints(ImVec2(500, 300), ImVec2(1000, 1000));
-	ImGui::Begin("Chat !");
+	bool show = true;
+	const ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(viewport->WorkPos);
+	ImGui::SetNextWindowSize(viewport->WorkSize);
+
+	ImGui::Begin("Chat !", &show, WINDOW_FULLSCREEN_FLAGS);
 	ImGui::Text(std::format("Hello {} !", name).c_str());
 	ImGui::Text("Write text and press enter to send it.");
 	// ReSharper disable once CppTooWideScope
@@ -57,8 +61,12 @@ bool RenderLoginWindow(
 	std::string& name, sf::IpAddress& ip, unsigned short& port
 )
 {
-	ImGui::SetNextWindowSizeConstraints(ImVec2(500, 300), ImVec2(1000, 1000));
-	ImGui::Begin("Login");
+	bool show = true;
+	const ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImGui::SetNextWindowPos(viewport->WorkPos);
+	ImGui::SetNextWindowSize(viewport->WorkSize);
+
+	ImGui::Begin("Login", &show, WINDOW_FULLSCREEN_FLAGS);
 	ImGui::TextWrapped("Please type your name, ip of the server and its ports.");
 	// ReSharper disable once CppTooWideScope
 	ImGui::InputTextWithHint("##name", "Your name", senderInputBuffer, SENDER_BUFFER_SIZE);
@@ -159,7 +167,7 @@ int main()
 			auto inputText = RenderChatWindow(messageInputBuffer, Message::GetMessagesString(messages), name);
 			if (inputText.has_value())
 			{
-				
+
 				sendingMessage = { name, inputText.value() };
 				sendingPacket << sendingMessage;
 				isSendingMessage = true;

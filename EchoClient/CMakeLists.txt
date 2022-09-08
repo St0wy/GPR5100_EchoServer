@@ -37,9 +37,11 @@ include_directories(include/)
 # Add source to this project's executable.  
 file(GLOB_RECURSE PROJECT_SRC src/*.cpp include/*.h)
 
+set (SRC ${PROJECT_SRC} ${PROJECT_COMMON})
+
 # TODO: use the line with "win32" in it if you don't want the console
-add_executable(${EXECUTABLE_CUSTOM_NAME} ${PROJECT_SRC} ${PROJECT_COMMON})
-# add_executable(${EXECUTABLE_CUSTOM_NAME} win32 ${PROJECT_SRC})
+# add_executable(${EXECUTABLE_CUSTOM_NAME} ${SRC})
+add_executable(${EXECUTABLE_CUSTOM_NAME} WIN32 "${SRC}")
 
 # Add data dependencies
 add_dependencies(${EXECUTABLE_CUSTOM_NAME} DataTarget-${EXECUTABLE_CUSTOM_NAME})
@@ -47,8 +49,12 @@ add_dependencies(${EXECUTABLE_CUSTOM_NAME} DataTarget-${EXECUTABLE_CUSTOM_NAME})
 # Link libraries
 target_link_libraries(${EXECUTABLE_CUSTOM_NAME} PRIVATE sfml-main sfml-graphics sfml-audio sfml-window sfml-system sfml-network)
 
+if (WIN32)
+target_link_libraries(${EXECUTABLE_CUSTOM_NAME} PRIVATE sfml-main )
+endif()
+
 if(MSVC)
-target_link_libraries(${EXECUTABLE_CUSTOM_NAME} PRIVATE sfml-main FLAC OpenAL OpenGL Vorbis)
+target_link_libraries(${EXECUTABLE_CUSTOM_NAME} PRIVATE FLAC OpenAL OpenGL Vorbis)
 else()
 target_link_libraries(${EXECUTABLE_CUSTOM_NAME} PRIVATE X11 FLAC UDev OpenAL  ${OPENGL_LIBRARIES} )
 endif()
