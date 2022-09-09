@@ -8,8 +8,8 @@
 #include <iostream>
 #include <optional>
 
-#include "Consts.h"
-#include "Message.h"
+#include "Consts.hpp"
+#include "Message.hpp"
 #include "SFML/Network/IpAddress.hpp"
 
 

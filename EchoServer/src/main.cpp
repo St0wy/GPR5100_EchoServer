@@ -3,8 +3,8 @@
 #include <SFML/Network/TcpSocket.hpp>
 #include <SFML/Network/SocketSelector.hpp>
 
-#include "Consts.h"
-#include "Message.h"
+#include "Consts.hpp"
+#include "Message.hpp"
 
 void ListenSockets(const std::vector<std::unique_ptr<sf::TcpSocket>>& clients, const sf::SocketSelector& selector)
 {
