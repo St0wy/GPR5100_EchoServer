@@ -12,7 +12,8 @@ std::string Message::GetMessagesString(const std::vector<Message>& messages, con
 	std::string text;
 	if (reverse)
 	{
-		for (int i = messages.size() - 1; i >= 0; --i)
+		const int size = static_cast<int>(messages.size());
+		for (int i = size - 1; i >= 0; --i)
 		{
 			text += messages[i].ToString() + "\n";
 		}

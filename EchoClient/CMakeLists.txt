@@ -3,6 +3,9 @@
 set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+
 set_property(GLOBAL PROPERTY USE_FOLDERS On)
 
 # Add data files
@@ -26,6 +29,8 @@ endforeach()
 add_custom_target(
         DataTarget-${EXECUTABLE_CUSTOM_NAME}
         DEPENDS ${DATA_BINARY_FILES} ${DATA_FILES})
+
+set(SFML_STATIC_LIBRARIES TRUE)
 
 # Get SFML and box2d libraries
 find_package(OpenGL REQUIRED)
