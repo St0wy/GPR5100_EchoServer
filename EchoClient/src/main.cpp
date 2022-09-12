@@ -12,8 +12,7 @@
 #include "Message.hpp"
 #include "SFML/Network/IpAddress.hpp"
 
-
-void ResetBuffer(char* buffer, const std::size_t size)
+void ResetBuffer(char *buffer, const std::size_t size)
 {
 	for (std::size_t i = 0; i < size; ++i)
 	{
@@ -21,10 +20,10 @@ void ResetBuffer(char* buffer, const std::size_t size)
 	}
 }
 
-std::optional<std::string> RenderChatWindow(char* charInputBuffer, const std::string& content, const std::string& name)
+std::optional<std::string> RenderChatWindow(char *charInputBuffer, const std::string &content, const std::string &name)
 {
 	bool show = true;
-	const ImGuiViewport* viewport = ImGui::GetMainViewport();
+	const ImGuiViewport *viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->WorkPos);
 	ImGui::SetNextWindowSize(viewport->WorkSize);
 
@@ -43,7 +42,7 @@ std::optional<std::string> RenderChatWindow(char* charInputBuffer, const std::st
 		ImGui::SetKeyboardFocusHere(-1);
 	}
 
-	ImGui::TextWrapped(content.c_str());  // NOLINT(clang-diagnostic-format-security)
+	ImGui::TextWrapped(content.c_str()); // NOLINT(clang-diagnostic-format-security)
 	ImGui::End();
 
 	if (pressedEnter)
@@ -57,12 +56,11 @@ std::optional<std::string> RenderChatWindow(char* charInputBuffer, const std::st
 }
 
 bool RenderLoginWindow(
-	char* senderInputBuffer, char* ipInputBuffer, char* portInputBuffer,
-	std::string& name, sf::IpAddress& ip, unsigned short& port
-)
+	char *senderInputBuffer, char *ipInputBuffer, char *portInputBuffer,
+	std::string &name, sf::IpAddress &ip, unsigned short &port)
 {
 	bool show = true;
-	const ImGuiViewport* viewport = ImGui::GetMainViewport();
+	const ImGuiViewport *viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->WorkPos);
 	ImGui::SetNextWindowSize(viewport->WorkSize);
 
@@ -88,7 +86,8 @@ bool RenderLoginWindow(
 		else
 		{
 			std::cout << "Name is too short.\n";
-			std::cout << inputName << "\n" << senderInputBuffer << "\n";
+			std::cout << inputName << "\n"
+					  << senderInputBuffer << "\n";
 			std::cout << name.empty() << "\n";
 		}
 	}
@@ -109,7 +108,7 @@ int main()
 	}
 
 	// Set window scale for HDPI screens
-	ImGuiIO& io = ImGui::GetIO();
+	ImGuiIO &io = ImGui::GetIO();
 	io.FontGlobalScale = 2;
 
 	// Create socket
@@ -133,9 +132,11 @@ int main()
 	sf::Packet receivePacket;
 
 	sf::Clock deltaClock;
-	while (window.isOpen()) {
+	while (window.isOpen())
+	{
 		sf::Event event{};
-		while (window.pollEvent(event)) {
+		while (window.pollEvent(event))
+		{
 			ImGui::SFML::ProcessEvent(window, event);
 
 			if (event.type == sf::Event::Closed)
@@ -144,7 +145,7 @@ int main()
 			}
 			else if (event.type == sf::Event::Resized)
 			{
-				sf::Vector2f size = { static_cast<float>(event.size.width), static_cast<float>(event.size.height) };
+				sf::Vector2f size = {static_cast<float>(event.size.width), static_cast<float>(event.size.height)};
 				sf::Vector2f center = size / 2.0f;
 				window.setView(sf::View(center, size));
 			}
@@ -168,7 +169,7 @@ int main()
 			if (inputText.has_value())
 			{
 
-				sendingMessage = { name, inputText.value() };
+				sendingMessage = {name, inputText.value()};
 				sendingPacket << sendingMessage;
 				isSendingMessage = true;
 			}
